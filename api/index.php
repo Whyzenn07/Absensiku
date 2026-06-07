@@ -5,11 +5,11 @@ use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 
-// Serve static files from public/ directly (before booting Laravel).
-$requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
-$publicDir   = __DIR__ . '/../public';
+// ── Static file shortcut (before Laravel boots) ───────────────────────────
+$requestPath    = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
+$publicDir      = __DIR__ . '/../public';
 $resolvedPublic = realpath($publicDir);
-$staticFile  = ($resolvedPublic !== false) ? realpath($publicDir . $requestPath) : false;
+$staticFile     = ($resolvedPublic !== false) ? realpath($publicDir . $requestPath) : false;
 
 if (
     $requestPath !== '/' &&
@@ -18,25 +18,14 @@ if (
     strncmp($staticFile, $resolvedPublic, strlen($resolvedPublic)) === 0 &&
     is_file($staticFile)
 ) {
-    $ext = strtolower(pathinfo($staticFile, PATHINFO_EXTENSION));
+    $ext  = strtolower(pathinfo($staticFile, PATHINFO_EXTENSION));
     $mime = [
-        'css'         => 'text/css',
-        'js'          => 'application/javascript',
-        'json'        => 'application/json',
-        'map'         => 'application/json',
-        'png'         => 'image/png',
-        'jpg'         => 'image/jpeg',
-        'jpeg'        => 'image/jpeg',
-        'gif'         => 'image/gif',
-        'svg'         => 'image/svg+xml',
-        'ico'         => 'image/x-icon',
-        'woff'        => 'font/woff',
-        'woff2'       => 'font/woff2',
-        'ttf'         => 'font/ttf',
-        'eot'         => 'application/vnd.ms-fontobject',
-        'webp'        => 'image/webp',
-        'txt'         => 'text/plain',
-        'xml'         => 'application/xml',
+        'css'  => 'text/css', 'js' => 'application/javascript',
+        'json' => 'application/json', 'map' => 'application/json',
+        'png'  => 'image/png', 'jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg',
+        'gif'  => 'image/gif', 'svg' => 'image/svg+xml', 'ico' => 'image/x-icon',
+        'woff' => 'font/woff', 'woff2' => 'font/woff2', 'ttf' => 'font/ttf',
+        'webp' => 'image/webp', 'txt' => 'text/plain', 'xml' => 'application/xml',
         'webmanifest' => 'application/manifest+json',
     ][$ext] ?? 'application/octet-stream';
 
@@ -46,16 +35,34 @@ if (
     exit;
 }
 
-// Maintenance mode check.
+// ── Redirect Laravel storage to /tmp (only /var/task is read-only on Vercel) ──
+$tmpStorage = '/tmp/laravel-storage';
+foreach ([
+    'framework/cache/data',
+    'framework/sessions',
+    'framework/views',
+    'framework/testing',
+    'logs',
+    'app/public',
+] as $dir) {
+    $fullPath = "$tmpStorage/$dir";
+    if (!is_dir($fullPath)) {
+        mkdir($fullPath, 0755, true);
+    }
+}
+
+// ── Maintenance mode ──────────────────────────────────────────────────────
 if (file_exists($maintenance = __DIR__ . '/../storage/framework/maintenance.php')) {
     require $maintenance;
 }
 
-// Bootstrap Laravel (11.x pattern).
+// ── Bootstrap Laravel 11 ──────────────────────────────────────────────────
 require __DIR__ . '/../vendor/autoload.php';
 
 /** @var Application $app */
 $app = require_once __DIR__ . '/../bootstrap/app.php';
+
+$app->useStoragePath($tmpStorage);
 
 $app->bind('path.public', function () {
     return __DIR__ . '/../public';

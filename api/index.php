@@ -35,7 +35,7 @@ if (
     exit;
 }
 
-// ── Redirect Laravel storage to /tmp (only /var/task is read-only on Vercel) ──
+// ── Redirect Laravel storage + bootstrap cache to /tmp (read-only on Vercel) ──
 $tmpStorage = '/tmp/laravel-storage';
 foreach ([
     'framework/cache/data',
@@ -44,11 +44,22 @@ foreach ([
     'framework/testing',
     'logs',
     'app/public',
+    'bootstrap',
 ] as $dir) {
     $fullPath = "$tmpStorage/$dir";
     if (!is_dir($fullPath)) {
         mkdir($fullPath, 0755, true);
     }
+}
+
+// Redirect ProviderRepository cache files away from read-only bootstrap/cache/
+foreach ([
+    'APP_SERVICES_CACHE' => "$tmpStorage/bootstrap/services.php",
+    'APP_PACKAGES_CACHE' => "$tmpStorage/bootstrap/packages.php",
+] as $envKey => $tmpPath) {
+    putenv("$envKey=$tmpPath");
+    $_ENV[$envKey]    = $tmpPath;
+    $_SERVER[$envKey] = $tmpPath;
 }
 
 // ── Copy pre-seeded SQLite to /tmp if not already there ───────────────────────

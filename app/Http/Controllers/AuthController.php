@@ -20,8 +20,6 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        \Log::info('[LOGIN] start email=' . $request->input('email'));
-
         $credentials = $request->validate(
             [
                 'email'    => ['required', 'email'],
@@ -34,22 +32,14 @@ class AuthController extends Controller
             ]
         );
 
-        \Log::info('[LOGIN] credentials validated');
-
         if (Auth::attempt($credentials)) {
-            \Log::info('[LOGIN] attempt success');
             $request->session()->regenerate();
-            \Log::info('[LOGIN] session regenerated');
 
-            $isAdmin = Auth::user()->isAdmin();
-            \Log::info('[LOGIN] isAdmin=' . ($isAdmin ? 'true' : 'false'));
-
-            return $isAdmin
+            return Auth::user()->isAdmin()
                 ? redirect()->intended(route('admin.dashboard'))
                 : redirect()->intended(route('mahasiswa.dashboard'));
         }
 
-        \Log::info('[LOGIN] attempt failed');
         return back()->withErrors(['email' => 'Email atau password salah.'])->onlyInput('email');
     }
 

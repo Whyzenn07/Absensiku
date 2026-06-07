@@ -14,17 +14,5 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        // TEMP DEBUG: return plain-text error so we can see it in curl output
-        $exceptions->render(function (\Throwable $e, $request) {
-            error_log('[[ERR]] ' . get_class($e) . ': ' . $e->getMessage()
-                . ' @ ' . basename($e->getFile()) . ':' . $e->getLine());
-            return response(
-                '[[DEBUG500]] ' . get_class($e) . "\n"
-                    . $e->getMessage() . "\n"
-                    . $e->getFile() . ':' . $e->getLine() . "\n"
-                    . substr($e->getTraceAsString(), 0, 3000),
-                500,
-                ['Content-Type' => 'text/plain']
-            );
-        });
+        //
     })->create();

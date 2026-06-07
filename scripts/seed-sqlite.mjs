@@ -15,7 +15,8 @@ const SQL = await initSqlJs();
 const db = new SQL.Database();
 
 const now = new Date().toISOString().replace('T', ' ').substring(0, 19);
-const hash = bcrypt.hashSync('password', 10);
+// bcryptjs uses $2b$ prefix; PHP expects $2y$ (functionally identical)
+const hash = bcrypt.hashSync('password', 10).replace(/^\$2b\$/, '$2y$');
 
 // ── Schema ────────────────────────────────────────────────────────────────────
 db.run(`

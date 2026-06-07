@@ -69,15 +69,6 @@ if (!file_exists($sqliteDest) && file_exists($sqliteSrc)) {
     copy($sqliteSrc, $sqliteDest);
 }
 
-// ── Diagnostics (TEMP) ────────────────────────────────────────────────────
-error_log('[[DIAG]] METHOD=' . ($_SERVER['REQUEST_METHOD'] ?? '?') . ' PATH=' . ($requestPath ?? '?'));
-error_log('[[DIAG]] DB_DATABASE=' . (getenv('DB_DATABASE') ?: 'not-set'));
-error_log('[[DIAG]] SESSION_DRIVER=' . (getenv('SESSION_DRIVER') ?: 'not-set'));
-error_log('[[DIAG]] LOG_CHANNEL=' . (getenv('LOG_CHANNEL') ?: 'not-set'));
-error_log('[[DIAG]] sqlite_src=' . (file_exists($sqliteSrc) ? 'OK' : 'MISSING'));
-error_log('[[DIAG]] sqlite_dest=' . (file_exists($sqliteDest) ? 'OK' : 'MISSING'));
-error_log('[[DIAG]] services_cache=' . (file_exists('/tmp/laravel-storage/bootstrap/services.php') ? 'EXISTS' : 'NEW'));
-
 // ── Maintenance mode ──────────────────────────────────────────────────────
 if (file_exists($maintenance = __DIR__ . '/../storage/framework/maintenance.php')) {
     require $maintenance;

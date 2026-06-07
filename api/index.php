@@ -51,6 +51,13 @@ foreach ([
     }
 }
 
+// ── Copy pre-seeded SQLite to /tmp if not already there ───────────────────────
+$sqliteDest = '/tmp/database.sqlite';
+$sqliteSrc  = __DIR__ . '/../database/database.sqlite';
+if (!file_exists($sqliteDest) && file_exists($sqliteSrc)) {
+    copy($sqliteSrc, $sqliteDest);
+}
+
 // ── Maintenance mode ──────────────────────────────────────────────────────
 if (file_exists($maintenance = __DIR__ . '/../storage/framework/maintenance.php')) {
     require $maintenance;

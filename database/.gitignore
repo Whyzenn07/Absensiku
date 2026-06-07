@@ -1,1 +1,5 @@
-*.sqlite*
+# Allow committed seed database
+!database.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite-journal

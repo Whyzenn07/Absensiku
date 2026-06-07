@@ -51,7 +51,7 @@
     <header class="bg-white px-4 py-3 flex items-center justify-between sticky top-0 z-30 border-b border-slate-100">
         <div class="flex items-center gap-2">
             <div class="w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center">
-                <i class="fas fa-th-large text-white text-xs"></i>
+                <i class="fas fa-qrcode text-white text-xs"></i>
             </div>
             <span class="font-bold text-blue-700 text-sm tracking-tight">AbsensiKu</span>
         </div>

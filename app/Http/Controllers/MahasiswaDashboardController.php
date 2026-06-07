@@ -30,17 +30,13 @@ class MahasiswaDashboardController extends Controller
                 ->get()
             : collect();
 
-        $riwayatTerakhir = $mahasiswa->absensis()
-            ->with(['sesi.mataKuliah', 'sesi.kelas'])
-            ->latest('waktu_scan')
-            ->limit(3)
-            ->get();
+        $tanggal = Carbon::now()->locale('id')->isoFormat('dddd, D MMMM Y');
 
         return view('mahasiswa.dashboard', compact(
             'mahasiswa',
             'totalAbsensi', 'totalHadir', 'totalIzin', 'totalAlpha', 'persentase',
             'jadwalHariIni',
-            'riwayatTerakhir'
+            'tanggal'
         ));
     }
 }

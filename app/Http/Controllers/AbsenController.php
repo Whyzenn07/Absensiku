@@ -63,15 +63,22 @@ class AbsenController extends Controller
         return redirect()->route('absen.scan', $request->token);
     }
 
-    public function riwayat()
+    public function riwayat(Request $request)
     {
         $mahasiswa = auth()->user()->mahasiswa()->firstOrFail();
+        $search    = $request->input('search');
+
+        $totalHadir = $mahasiswa->absensis()->where('status', 'hadir')->count();
+        $totalIzin  = $mahasiswa->absensis()->where('status', 'izin')->count();
+        $totalAlpha = $mahasiswa->absensis()->where('status', 'alpha')->count();
 
         $absensis = $mahasiswa->absensis()
-            ->with(['sesi.mataKuliah', 'sesi.kelas'])
+            ->with(['sesi.mataKuliah'])
+            ->when($search, fn ($q) => $q->whereHas('sesi.mataKuliah', fn ($m) => $m->where('nama', 'like', "%{$search}%")))
             ->latest('waktu_scan')
-            ->paginate(20);
+            ->paginate(20)
+            ->withQueryString();
 
-        return view('mahasiswa.riwayat', compact('absensis'));
+        return view('mahasiswa.riwayat', compact('absensis', 'totalHadir', 'totalIzin', 'totalAlpha', 'search'));
     }
 }

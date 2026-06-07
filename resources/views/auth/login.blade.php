@@ -8,7 +8,7 @@
     {{-- Icon + Heading --}}
     <div class="flex flex-col items-center text-center space-y-3">
         <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center shadow">
-            <i class="fas fa-th-large text-white text-2xl"></i>
+            <i class="fas fa-qrcode text-white text-2xl"></i>
         </div>
         <div>
             <h1 class="text-2xl font-extrabold text-gray-900">Selamat Datang!</h1>

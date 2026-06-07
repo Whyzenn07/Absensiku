@@ -8,16 +8,16 @@
     {{-- ── Hero Card ────────────────────────────────────────────────────── --}}
     <div class="bg-blue-600 rounded-2xl p-5 text-white shadow">
         <div class="flex items-center gap-2 mb-3">
-            <span class="text-xs font-bold bg-white/20 px-2.5 py-1 rounded-full">Admin | Dosen</span>
+            <span class="text-xs font-bold bg-white/20 px-2.5 py-1 rounded-full">Admin / Dosen</span>
         </div>
         <h2 class="text-xl font-extrabold leading-tight">{{ auth()->user()->name }}</h2>
         <p class="text-blue-200 text-xs mt-0.5">NIP: {{ str_pad(auth()->user()->id, 10, '0', STR_PAD_LEFT) }}</p>
 
         <div class="mt-4 flex items-center gap-2 bg-blue-500/50 rounded-xl px-3 py-2">
-            <i class="fas fa-calendar-alt text-blue-200 text-sm"></i>
+            <i class="fas fa-clock text-blue-200 text-sm"></i>
             <div>
                 <p class="text-white font-semibold text-sm">{{ $tanggal }}</p>
-                <p class="text-blue-200 text-xs">Pusat Sistem Absensi</p>
+                <p class="text-blue-200 text-xs">Panel Admin Absensi</p>
             </div>
         </div>
     </div>

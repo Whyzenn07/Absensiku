@@ -16,10 +16,10 @@ return new class extends Migration
         });
 
         DB::table('prodis')->insert([
-            ['nama' => 'Teknik Informatika', 'created_at' => now(), 'updated_at' => now()],
-            ['nama' => 'Sistem Informasi', 'created_at' => now(), 'updated_at' => now()],
-            ['nama' => 'Teknik Elektro', 'created_at' => now(), 'updated_at' => now()],
-            ['nama' => 'Manajemen Informatika', 'created_at' => now(), 'updated_at' => now()],
+            ['nama' => 'Informatika',       'created_at' => now(), 'updated_at' => now()],
+            ['nama' => 'Sistem Informasi',  'created_at' => now(), 'updated_at' => now()],
+            ['nama' => 'Teknik Komputer',   'created_at' => now(), 'updated_at' => now()],
+            ['nama' => 'Teknik Elektro',    'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 

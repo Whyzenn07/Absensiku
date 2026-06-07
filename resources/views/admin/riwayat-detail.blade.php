@@ -5,15 +5,17 @@
 @section('content')
 <div class="px-4 pt-4 pb-4 space-y-4">
 
-    {{-- ── Page Header ──────────────────────────────────────────────────── --}}
-    <div class="flex items-center gap-3">
-        <a href="{{ route('admin.riwayat') }}"
-           class="w-9 h-9 bg-slate-100 rounded-xl flex items-center justify-center text-slate-600 hover:bg-slate-200 transition">
-            <i class="fas fa-arrow-left text-sm"></i>
-        </a>
-        <div>
-            <h1 class="text-base font-extrabold text-slate-800">Detail Absensi</h1>
-            <p class="text-xs text-slate-500">{{ $sesi->mataKuliah->nama ?? '–' }} – {{ $sesi->kelas->nama ?? '–' }}</p>
+    {{-- ── Page Header (Blue) ─────────────────────────────────────────── --}}
+    <div class="bg-blue-600 -mx-4 -mt-4 px-4 pt-4 pb-3 mb-1">
+        <div class="flex items-center gap-3">
+            <a href="{{ route('admin.riwayat') }}"
+               class="w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center text-white hover:bg-white/30 transition">
+                <i class="fas fa-arrow-left text-sm"></i>
+            </a>
+            <div>
+                <h1 class="text-base font-extrabold text-white">Detail Absensi</h1>
+                <p class="text-xs text-blue-200">{{ $sesi->mataKuliah->nama ?? '–' }} – {{ $sesi->kelas->nama ?? '–' }}</p>
+            </div>
         </div>
     </div>
 

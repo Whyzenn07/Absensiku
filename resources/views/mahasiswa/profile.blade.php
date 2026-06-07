@@ -3,62 +3,129 @@
 @section('title', 'Profil – AbsensiKu')
 
 @section('content')
-<div class="px-4 pt-4 pb-4 space-y-4">
 
-    {{-- ── Profile Card ─────────────────────────────────────────────────── --}}
-    <div class="bg-blue-600 rounded-2xl p-5 shadow-md flex flex-col items-center text-center">
-        <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-white font-extrabold text-2xl mb-3">
-            {{ $mahasiswa->inisials }}
-        </div>
-        <p class="text-white font-extrabold text-base">{{ $mahasiswa->user->name }}</p>
-        <p class="text-blue-200 text-sm mt-0.5">{{ $mahasiswa->nim }}</p>
-        <div class="flex items-center gap-2 mt-2">
-            <span class="px-3 py-1 bg-white/20 text-white rounded-full text-xs font-semibold">
-                {{ $mahasiswa->prodi->nama ?? '–' }}
-            </span>
-            <span class="px-3 py-1 bg-white/20 text-white rounded-full text-xs font-semibold">
-                {{ $mahasiswa->kelas->nama ?? '–' }}
-            </span>
-        </div>
+{{-- ── Blue Header Section (full-width) ───────────────────────────────────── --}}
+<div class="bg-blue-600 px-4 pt-4 pb-12 shadow-md">
+    {{-- Sub-page back nav --}}
+    <div class="flex items-center gap-3 mb-6">
+        <a href="{{ route('mahasiswa.dashboard') }}"
+           class="w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center text-white hover:bg-white/30 transition">
+            <i class="fas fa-arrow-left text-sm"></i>
+        </a>
+        <p class="text-white font-extrabold text-base">Profile Saya</p>
     </div>
 
-    {{-- ── Info Card ────────────────────────────────────────────────────── --}}
-    <div class="bg-white rounded-2xl border border-slate-100 p-4 shadow-sm space-y-3">
-        <p class="text-sm font-extrabold text-slate-800">Informasi Akun</p>
+    {{-- Avatar + Name + Badge + NIM --}}
+    <div class="flex flex-col items-center text-center">
+        <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mb-3 shadow-inner">
+            <i class="fas fa-user text-white text-4xl"></i>
+        </div>
+        <p class="text-white font-extrabold text-lg">{{ $mahasiswa->user->name }}</p>
+        <span class="mt-1.5 px-3 py-0.5 bg-white/20 text-white rounded-full text-xs font-bold">Mahasiswa</span>
+        <p class="text-blue-200 text-xs mt-1.5">{{ $mahasiswa->nim }}</p>
+    </div>
+</div>
 
-        <div class="flex items-center gap-3 py-2 border-b border-slate-100">
-            <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center shrink-0">
-                <i class="fas fa-envelope text-blue-500 text-sm"></i>
+{{-- ── Cards (overlap blue section) ───────────────────────────────────────── --}}
+<div class="px-4 space-y-4 -mt-6 pb-6">
+
+    {{-- Informasi Pribadi --}}
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 space-y-1">
+        <p class="text-sm font-extrabold text-slate-800 mb-3">Informasi Pribadi</p>
+
+        <div class="flex items-center gap-3 py-2.5 border-b border-slate-50">
+            <div class="w-9 h-9 bg-blue-50 rounded-lg flex items-center justify-center shrink-0">
+                <i class="fas fa-user text-blue-500 text-sm"></i>
             </div>
-            <div>
-                <p class="text-xs text-slate-400">Email</p>
-                <p class="text-sm font-semibold text-slate-700">{{ $mahasiswa->user->email }}</p>
+            <div class="flex-1 min-w-0">
+                <p class="text-xs text-slate-400">Nama Lengkap</p>
+                <p class="text-sm font-semibold text-slate-700">{{ $mahasiswa->user->name }}</p>
             </div>
         </div>
 
-        <div class="flex items-center gap-3 py-2 border-b border-slate-100">
-            <div class="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center shrink-0">
+        <div class="flex items-center gap-3 py-2.5 border-b border-slate-50">
+            <div class="w-9 h-9 bg-violet-50 rounded-lg flex items-center justify-center shrink-0">
+                <i class="fas fa-id-card text-violet-500 text-sm"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <p class="text-xs text-slate-400">NIM</p>
+                <p class="text-sm font-semibold text-slate-700">{{ $mahasiswa->nim }}</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3 py-2.5 border-b border-slate-50">
+            <div class="w-9 h-9 bg-blue-50 rounded-lg flex items-center justify-center shrink-0">
+                <i class="fas fa-envelope text-blue-500 text-sm"></i>
+            </div>
+            <div class="flex-1 min-w-0 overflow-hidden">
+                <p class="text-xs text-slate-400">Email</p>
+                <p class="text-sm font-semibold text-slate-700 truncate">{{ $mahasiswa->user->email }}</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3 py-2.5 border-b border-slate-50">
+            <div class="w-9 h-9 bg-emerald-50 rounded-lg flex items-center justify-center shrink-0">
                 <i class="fas fa-phone text-emerald-500 text-sm"></i>
             </div>
-            <div>
-                <p class="text-xs text-slate-400">No HP</p>
+            <div class="flex-1 min-w-0">
+                <p class="text-xs text-slate-400">No. Hp</p>
                 <p class="text-sm font-semibold text-slate-700">{{ $mahasiswa->no_hp ?? '–' }}</p>
             </div>
         </div>
 
-        <div class="flex items-center gap-3 py-2">
-            <div class="w-8 h-8 bg-violet-50 rounded-lg flex items-center justify-center shrink-0">
-                <i class="fas fa-graduation-cap text-violet-500 text-sm"></i>
+        <div class="flex items-center gap-3 py-2.5 border-b border-slate-50">
+            <div class="w-9 h-9 bg-amber-50 rounded-lg flex items-center justify-center shrink-0">
+                <i class="fas fa-graduation-cap text-amber-500 text-sm"></i>
             </div>
-            <div>
+            <div class="flex-1 min-w-0">
                 <p class="text-xs text-slate-400">Program Studi</p>
                 <p class="text-sm font-semibold text-slate-700">{{ $mahasiswa->prodi->nama ?? '–' }}</p>
             </div>
         </div>
+
+        <div class="flex items-center gap-3 py-2.5">
+            <div class="w-9 h-9 bg-blue-50 rounded-lg flex items-center justify-center shrink-0">
+                <i class="fas fa-chalkboard-teacher text-blue-500 text-sm"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <p class="text-xs text-slate-400">Kelas</p>
+                <p class="text-sm font-semibold text-slate-700">{{ $mahasiswa->kelas->nama ?? '–' }}</p>
+            </div>
+        </div>
     </div>
 
-    {{-- ── Ganti Password ───────────────────────────────────────────────── --}}
-    <div class="bg-white rounded-2xl border border-slate-100 p-4 shadow-sm">
+    {{-- Pengaturan --}}
+    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <p class="px-4 pt-3 pb-1 text-sm font-extrabold text-slate-800">Pengaturan</p>
+
+        <button onclick="toggleGantiPassword()"
+            class="w-full flex items-center gap-3 px-4 py-3.5 border-t border-slate-100 hover:bg-slate-50 transition">
+            <div class="w-9 h-9 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-center shrink-0">
+                <i class="fas fa-cog text-slate-500 text-sm"></i>
+            </div>
+            <p class="text-sm font-semibold text-slate-700 flex-1 text-left">Pengaturan Akun</p>
+            <i id="pw-chevron" class="fas fa-chevron-right text-slate-300 text-xs transition-transform"></i>
+        </button>
+
+        <div class="flex items-center gap-3 px-4 py-3.5 border-t border-slate-100">
+            <div class="w-9 h-9 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-center shrink-0">
+                <i class="fas fa-bell text-slate-500 text-sm"></i>
+            </div>
+            <p class="text-sm font-semibold text-slate-700 flex-1">Notifikasi</p>
+            <i class="fas fa-chevron-right text-slate-300 text-xs"></i>
+        </div>
+
+        <div class="flex items-center gap-3 px-4 py-3.5 border-t border-slate-100">
+            <div class="w-9 h-9 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-center shrink-0">
+                <i class="fas fa-shield-alt text-slate-500 text-sm"></i>
+            </div>
+            <p class="text-sm font-semibold text-slate-700 flex-1">Keamanan</p>
+            <i class="fas fa-chevron-right text-slate-300 text-xs"></i>
+        </div>
+    </div>
+
+    {{-- Ganti Password (collapsible) --}}
+    <div id="ganti-password-section" class="hidden bg-white rounded-2xl border border-slate-100 p-4 shadow-sm">
         <p class="text-sm font-extrabold text-slate-800 mb-3">Ganti Password</p>
         <form action="{{ route('mahasiswa.profile.password') }}" method="POST" class="space-y-3">
             @csrf
@@ -89,14 +156,31 @@
         </form>
     </div>
 
-    {{-- ── Logout ───────────────────────────────────────────────────────── --}}
-    <form action="{{ route('logout') }}" method="POST" class="pb-2">
+    {{-- Logout --}}
+    <form action="{{ route('logout') }}" method="POST">
         @csrf
         <button type="submit"
-            class="w-full py-3 border-2 border-red-400 text-red-500 hover:bg-red-50 font-bold text-sm rounded-2xl transition">
-            <i class="fas fa-sign-out-alt mr-2"></i> Keluar
+            class="w-full py-3 border-2 border-red-400 text-red-500 hover:bg-red-50 font-bold text-sm rounded-2xl transition flex items-center justify-center gap-2">
+            <i class="fas fa-sign-out-alt"></i> Keluar
         </button>
     </form>
 
 </div>
+
 @endsection
+
+@push('scripts')
+<script>
+    function toggleGantiPassword() {
+        const section = document.getElementById('ganti-password-section');
+        const chevron = document.getElementById('pw-chevron');
+        const isHidden = section.classList.contains('hidden');
+        section.classList.toggle('hidden', !isHidden);
+        chevron.style.transform = isHidden ? 'rotate(90deg)' : '';
+    }
+
+    @if($errors->has('password_lama') || $errors->has('password'))
+        document.addEventListener('DOMContentLoaded', () => toggleGantiPassword());
+    @endif
+</script>
+@endpush

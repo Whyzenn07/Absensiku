@@ -5,20 +5,20 @@
 @section('content')
 <div class="px-4 pt-4 space-y-4">
 
-    {{-- ── Page Header ──────────────────────────────────────────────────── --}}
-    <div class="flex items-center justify-between">
+    {{-- ── Page Header (Blue) ─────────────────────────────────────────── --}}
+    <div class="bg-blue-600 -mx-4 -mt-4 px-4 pt-4 pb-3 mb-1 flex items-center justify-between">
         <div class="flex items-center gap-3">
             <a href="{{ route('admin.dashboard') }}"
-               class="w-9 h-9 bg-slate-100 rounded-xl flex items-center justify-center text-slate-600 hover:bg-slate-200 transition">
+               class="w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center text-white hover:bg-white/30 transition">
                 <i class="fas fa-arrow-left text-sm"></i>
             </a>
             <div>
-                <h1 class="text-base font-extrabold text-slate-800">Manajemen Mahasiswa</h1>
-                <p class="text-xs text-slate-500">{{ $mahasiswas->total() }} Mahasiswa Terdaftar</p>
+                <h1 class="text-base font-extrabold text-white">Manajemen Mahasiswa</h1>
+                <p class="text-xs text-blue-200">{{ $mahasiswas->total() }} Mahasiswa Terdaftar</p>
             </div>
         </div>
         <a href="{{ route('mahasiswa.create') }}"
-           class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center text-white hover:bg-blue-700 transition shadow">
+           class="w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center text-white hover:bg-white/30 transition">
             <i class="fas fa-plus text-sm"></i>
         </a>
     </div>

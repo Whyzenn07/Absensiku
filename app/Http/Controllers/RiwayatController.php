@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Absensi;
 use App\Models\Kelas;
-use App\Models\MataKuliah;
 use App\Models\Sesi;
 use Illuminate\Http\Request;
 
@@ -13,23 +13,38 @@ class RiwayatController extends Controller
     {
         $search    = $request->input('search');
         $kelasId   = $request->input('kelas_id');
-        $mkId      = $request->input('mk_id');
         $kelasList = Kelas::orderBy('nama')->get();
-        $mkList    = MataKuliah::where('user_id', auth()->id())->orderBy('nama')->get();
 
-        $sesis = Sesi::with(['mataKuliah', 'kelas', 'absensis'])
-            ->where('user_id', auth()->id())
-            ->when($kelasId, fn ($q) => $q->where('kelas_id', $kelasId))
-            ->when($mkId,    fn ($q) => $q->where('mata_kuliah_id', $mkId))
-            ->when($search,  function ($q) use ($search) {
-                $q->whereHas('mataKuliah', fn ($m) => $m->where('nama', 'like', "%{$search}%"))
-                  ->orWhereHas('kelas',    fn ($k) => $k->where('nama', 'like', "%{$search}%"));
-            })
-            ->latest('started_at')
+        $buildQuery = function () use ($search, $kelasId) {
+            $q = Absensi::with(['mahasiswa.user', 'mahasiswa.kelas', 'mahasiswa.prodi', 'sesi.mataKuliah'])
+                ->whereHas('sesi', fn ($s) => $s->where('user_id', auth()->id()));
+
+            if ($kelasId) {
+                $q->whereHas('mahasiswa', fn ($m) => $m->where('kelas_id', $kelasId));
+            }
+            if ($search) {
+                $q->where(function ($inner) use ($search) {
+                    $inner->whereHas('mahasiswa.user', fn ($m) => $m->where('name', 'like', "%{$search}%"))
+                          ->orWhereHas('mahasiswa', fn ($m) => $m->where('nim', 'like', "%{$search}%"))
+                          ->orWhereHas('sesi.mataKuliah', fn ($m) => $m->where('nama', 'like', "%{$search}%"));
+                });
+            }
+            return $q;
+        };
+
+        $totalHadir = $buildQuery()->where('status', 'hadir')->count();
+        $totalIzin  = $buildQuery()->where('status', 'izin')->count();
+        $totalAlpha = $buildQuery()->where('status', 'alpha')->count();
+
+        $absensis = $buildQuery()
+            ->latest('waktu_scan')
             ->paginate(15)
             ->withQueryString();
 
-        return view('admin.riwayat', compact('sesis', 'kelasList', 'mkList', 'search', 'kelasId', 'mkId'));
+        return view('admin.riwayat', compact(
+            'absensis', 'kelasList', 'search', 'kelasId',
+            'totalHadir', 'totalIzin', 'totalAlpha'
+        ));
     }
 
     public function show(Sesi $sesi)

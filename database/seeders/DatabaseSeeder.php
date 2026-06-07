@@ -68,12 +68,12 @@ class DatabaseSeeder extends Seeder
 
         // ── Mahasiswa ──────────────────────────────────────────────────────
         $mahasiswaData = [
-            ['name' => 'Neilsya Putri',    'email' => 'neilsyaputri@student.telkom.ac.id', 'nim' => '1030421310048', 'prodi' => 'Teknik Informatika', 'kelas' => 'IF-02'],
-            ['name' => 'Rivaldo Tandoko',  'email' => 'rivaldo@student.telkom.ac.id',       'nim' => '1034217006',    'prodi' => 'Teknik Informatika', 'kelas' => 'IF-02'],
-            ['name' => 'Wahyu Pratama',    'email' => 'wahyupratama@student.telkom.ac.id',  'nim' => '1034217008',    'prodi' => 'Teknik Informatika', 'kelas' => 'IF-02'],
-            ['name' => 'Aiqbal Hermawan', 'email' => 'aiqbal@student.telkom.ac.id',        'nim' => '1034219030',    'prodi' => 'Teknik Informatika', 'kelas' => 'IF-02'],
-            ['name' => 'Wahyu Argo Mulyo', 'email' => 'wahyuargomu123@gmail.com',           'nim' => '1034219045',    'prodi' => 'Sistem Informasi',   'kelas' => 'SI-01'],
-            ['name' => 'Muhammad Farhan',  'email' => 'farhan@student.telkom.ac.id',        'nim' => '1034221008',    'prodi' => 'Teknik Informatika', 'kelas' => 'IF-01'],
+            ['name' => 'Neilsya Putri',    'email' => 'neilsyaputri@student.telkom.ac.id', 'nim' => '103042310048',  'prodi' => 'Informatika',      'kelas' => 'IF-02'],
+            ['name' => 'Rivaldo Tandoko',  'email' => 'rivaldo@student.telkom.ac.id',       'nim' => '1034217006',    'prodi' => 'Informatika',      'kelas' => 'IF-02'],
+            ['name' => 'Wahyu Pratama',    'email' => 'wahyupratama@student.telkom.ac.id',  'nim' => '1034217008',    'prodi' => 'Informatika',      'kelas' => 'IF-02'],
+            ['name' => 'Aiqbal Hermawan',  'email' => 'aiqbal@student.telkom.ac.id',        'nim' => '1034219030',    'prodi' => 'Informatika',      'kelas' => 'IF-02'],
+            ['name' => 'Wahyu Argo Mulyo', 'email' => 'wahyuargomu123@gmail.com',           'nim' => '1034219045',    'prodi' => 'Sistem Informasi', 'kelas' => 'SI-01'],
+            ['name' => 'Muhammad Farhan',  'email' => 'farhan@student.telkom.ac.id',        'nim' => '1034221008',    'prodi' => 'Informatika',      'kelas' => 'IF-01'],
         ];
 
         $mahasiswaModels = [];

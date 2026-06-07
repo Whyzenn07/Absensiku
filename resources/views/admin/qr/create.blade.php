@@ -3,23 +3,26 @@
 @section('title', 'Generate QR – AbsensiKu')
 
 @section('content')
-<div class="px-4 pt-4 space-y-4">
 
-    {{-- ── Page Header ──────────────────────────────────────────────────── --}}
+{{-- ── Blue Header (full-width) ────────────────────────────────────────────── --}}
+<div class="bg-blue-600 px-4 pt-4 pb-5 shadow-md">
     <div class="flex items-center gap-3">
         <a href="{{ route('admin.dashboard') }}"
-           class="w-9 h-9 bg-slate-100 rounded-xl flex items-center justify-center text-slate-600 hover:bg-slate-200 transition">
+           class="w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center text-white hover:bg-white/30 transition">
             <i class="fas fa-arrow-left text-sm"></i>
         </a>
         <div>
-            <h1 class="text-base font-extrabold text-slate-800">Generate QR Absensi</h1>
-            <p class="text-xs text-slate-500">Buat QR Code untuk sesi hari ini</p>
+            <h1 class="text-base font-extrabold text-white">Generate QR Absensi</h1>
+            <p class="text-xs text-blue-200">Buat QR Code untuk sesi kelas</p>
         </div>
     </div>
+</div>
+
+<div class="px-4 pt-4 space-y-4 pb-6">
 
     {{-- ── Form Card ────────────────────────────────────────────────────── --}}
     <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 space-y-4">
-        <h2 class="text-sm font-bold text-slate-700 border-b border-slate-100 pb-2">Detail Absensi</h2>
+        <h2 class="text-sm font-bold text-slate-700 border-b border-slate-100 pb-3">Detail Absensi</h2>
 
         <form action="{{ route('admin.qr.store') }}" method="POST" id="qr-form" class="space-y-4">
             @csrf
@@ -28,8 +31,11 @@
             <div class="space-y-1">
                 <label class="text-xs font-semibold text-slate-600">Mata Kuliah</label>
                 <div class="relative">
+                    <span class="absolute inset-y-0 left-3 flex items-center pointer-events-none text-slate-400">
+                        <i class="fas fa-book text-sm"></i>
+                    </span>
                     <select name="mata_kuliah_id" id="sel-mk" required
-                        class="w-full appearance-none bg-slate-50 border rounded-xl px-4 py-3 pr-10 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 {{ $errors->has('mata_kuliah_id') ? 'border-red-400' : 'border-slate-200' }}">
+                        class="w-full appearance-none bg-slate-50 border rounded-xl pl-10 pr-10 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 {{ $errors->has('mata_kuliah_id') ? 'border-red-400' : 'border-slate-200' }}">
                         <option value="" disabled selected>Pilih Mata Kuliah</option>
                         @foreach($mataKuliahs as $mk)
                             <option value="{{ $mk->id }}" {{ old('mata_kuliah_id') == $mk->id ? 'selected' : '' }}>
@@ -48,8 +54,11 @@
             <div class="space-y-1">
                 <label class="text-xs font-semibold text-slate-600">Kelas</label>
                 <div class="relative">
+                    <span class="absolute inset-y-0 left-3 flex items-center pointer-events-none text-slate-400">
+                        <i class="fas fa-users text-sm"></i>
+                    </span>
                     <select name="kelas_id" id="sel-kelas" required
-                        class="w-full appearance-none bg-slate-50 border rounded-xl px-4 py-3 pr-10 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 {{ $errors->has('kelas_id') ? 'border-red-400' : 'border-slate-200' }}">
+                        class="w-full appearance-none bg-slate-50 border rounded-xl pl-10 pr-10 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 {{ $errors->has('kelas_id') ? 'border-red-400' : 'border-slate-200' }}">
                         <option value="" disabled selected>Pilih Kelas</option>
                         @foreach($kelas as $k)
                             <option value="{{ $k->id }}" {{ old('kelas_id') == $k->id ? 'selected' : '' }}>
@@ -72,9 +81,9 @@
                         <i class="fas fa-clock text-sm"></i>
                     </span>
                     <input type="number" name="durasi" id="durasi" min="1" max="300" required
-                        value="{{ old('durasi', 90) }}"
+                        value="{{ old('durasi', 15) }}"
                         class="w-full bg-slate-50 border rounded-xl pl-10 pr-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 {{ $errors->has('durasi') ? 'border-red-400' : 'border-slate-200' }}"
-                        placeholder="90">
+                        placeholder="15">
                 </div>
                 @error('durasi') <p class="text-xs text-red-500">{{ $message }}</p> @enderror
             </div>
@@ -93,7 +102,7 @@
         <div class="space-y-1">
             @forelse($mataKuliahs as $mk)
                 <button type="button" onclick="pilihMk({{ $mk->id }})"
-                    class="mk-chip w-full text-left px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition font-medium"
+                    class="mk-chip w-full text-left px-3 py-2.5 rounded-lg text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition font-medium"
                     data-id="{{ $mk->id }}">
                     {{ $mk->nama }}
                 </button>
@@ -118,6 +127,7 @@
     </div>
 
 </div>
+
 @endsection
 
 @push('scripts')
@@ -140,7 +150,6 @@
         });
     }
 
-    // Sinkronisasi chip aktif dengan dropdown (old value)
     const oldMk    = document.getElementById('sel-mk').value;
     const oldKelas = document.getElementById('sel-kelas').value;
     if (oldMk)    pilihMk(oldMk);

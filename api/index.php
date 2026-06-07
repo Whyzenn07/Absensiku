@@ -1,16 +1,21 @@
 <?php
+
+use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
+
 define('LARAVEL_START', microtime(true));
 
-// Serve static files from public/ directly (nginx-like behaviour).
-// This runs before Laravel boots so asset requests are fast.
+// Serve static files from public/ directly (before booting Laravel).
 $requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
 $publicDir   = __DIR__ . '/../public';
-$staticFile  = realpath($publicDir . $requestPath);
+$resolvedPublic = realpath($publicDir);
+$staticFile  = ($resolvedPublic !== false) ? realpath($publicDir . $requestPath) : false;
 
 if (
     $requestPath !== '/' &&
     $staticFile !== false &&
-    strncmp($staticFile, realpath($publicDir), strlen(realpath($publicDir))) === 0 &&
+    $resolvedPublic !== false &&
+    strncmp($staticFile, $resolvedPublic, strlen($resolvedPublic)) === 0 &&
     is_file($staticFile)
 ) {
     $ext = strtolower(pathinfo($staticFile, PATHINFO_EXTENSION));
@@ -41,17 +46,19 @@ if (
     exit;
 }
 
-// Dynamic request — bootstrap Laravel and handle via the HTTP kernel.
+// Maintenance mode check.
+if (file_exists($maintenance = __DIR__ . '/../storage/framework/maintenance.php')) {
+    require $maintenance;
+}
+
+// Bootstrap Laravel (11.x pattern).
 require __DIR__ . '/../vendor/autoload.php';
 
+/** @var Application $app */
 $app = require_once __DIR__ . '/../bootstrap/app.php';
 
 $app->bind('path.public', function () {
     return __DIR__ . '/../public';
 });
 
-$kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
-$response = $kernel->handle(
-    $request = Illuminate\Http\Request::capture()
-)->send();
-$kernel->terminate($request, $response);
+$app->handleRequest(Request::capture());

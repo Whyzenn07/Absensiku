@@ -8,21 +8,7 @@ use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QrController;
 use App\Http\Controllers\RiwayatController;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
-
-// ── Setup Route (HAPUS setelah deploy pertama) ────────────────────────────
-Route::get('/setup-absensiku-db-2024', function () {
-    try {
-        Artisan::call('migrate', ['--force' => true]);
-        $out = Artisan::output();
-        Artisan::call('db:seed', ['--force' => true]);
-        $out .= Artisan::output();
-        return response('<pre style="font-family:monospace;padding:2rem;">✅ BERHASIL!<br>' . htmlspecialchars($out) . '<br>⚠️ Hapus route ini dari routes/web.php sekarang!</pre>');
-    } catch (\Throwable $e) {
-        return response('<pre style="color:red;padding:2rem;">❌ ERROR: ' . htmlspecialchars($e->getMessage()) . '</pre>', 500);
-    }
-});
 
 // ── Landing Page ──────────────────────────────────────────────────────────
 Route::get('/', fn () => view('welcome'));

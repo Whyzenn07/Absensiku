@@ -25,7 +25,8 @@ class AppServiceProvider extends ServiceProvider
     {
         // Vercel terminates SSL at edge — force HTTPS so Laravel generates
         // correct https:// URLs for redirects, form actions, and cookies.
-        if ($this->app->environment('production')) {
+        // Applies to all non-local environments (production + preview deployments).
+        if (!$this->app->environment('local')) {
             URL::forceScheme('https');
         }
 

@@ -69,6 +69,12 @@ if (!file_exists($sqliteDest) && file_exists($sqliteSrc)) {
     copy($sqliteSrc, $sqliteDest);
 }
 
+// ── Force HTTPS on Vercel (SSL terminated at edge, Lambda receives HTTP) ─────
+if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+    $_SERVER['HTTPS']       = $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https' ? 'on' : 'off';
+    $_SERVER['SERVER_PORT'] = $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https' ? 443 : 80;
+}
+
 // ── Maintenance mode ──────────────────────────────────────────────────────
 if (file_exists($maintenance = __DIR__ . '/../storage/framework/maintenance.php')) {
     require $maintenance;

@@ -200,7 +200,7 @@ migrations.forEach((m, i) =>
 db.run(
     `INSERT INTO users (name, email, password, role, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)`,
     [
-        "Prof.Dr.Wahyu Argo Mulyo S.Kom. M.KomM",
+        "Prof.Dr.Johnny Epstein S.Kom., M.T.",
         "admin@gmail.com",
         hash,
         "admin",

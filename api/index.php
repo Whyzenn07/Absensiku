@@ -5,6 +5,15 @@ use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 
+// ── Canonical URL redirect: semua URL preview/lama → stable URL ──────────
+$canonicalHost = 'absensiku-whyzenn07s-projects.vercel.app';
+$currentHost   = $_SERVER['HTTP_HOST'] ?? '';
+if ($currentHost && $currentHost !== $canonicalHost && !empty($_SERVER['VERCEL'])) {
+    $path = $_SERVER['REQUEST_URI'] ?? '/';
+    header('Location: https://' . $canonicalHost . $path, true, 301);
+    exit;
+}
+
 // ── Static file shortcut (before Laravel boots) ───────────────────────────
 $requestPath    = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
 $publicDir      = __DIR__ . '/../public';
